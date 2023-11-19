@@ -1,5 +1,7 @@
 # Part0 assignments
 
+Using the mermaid sequence diagram shown at [the course website](https://fullstackopen.com/osa0/web_sovelluksen_toimintaperiaatteita#tehtavia) as the basis for the assignments.
+
 ## Assignment 0.4
 
 The sequence is almost identical to just refreshing the page: there's just an extra HTTP-request (POST) at the start.
