@@ -1,8 +1,18 @@
-Testing mermaid syntax:
+# Part0 assignments
+
+## Assignment 0.4
+
+The sequence is almost identical to just refreshing the page: there's just an extra HTTP-request (POST) at the start.
 ```mermaid
 sequenceDiagram
     participant browser
     participant server
+    
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note left of server: The server executes code that appends text from the POST request's payload into the list of notes.
+    server-->>browser: Redirect to location /exampleapp/notes
+    deactivate server
     
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
@@ -19,12 +29,8 @@ sequenceDiagram
     server-->>browser: the JavaScript file
     deactivate server
     
-    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
-    
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    server-->>browser: [{ content: "", date: ""}, ... ]
     deactivate server    
-
-    Note right of browser: The browser executes the callback function that renders the notes 
 ```
