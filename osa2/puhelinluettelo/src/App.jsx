@@ -38,6 +38,18 @@ const Filter = ({handler, state, setState}) => {
   )
 }
 
+const Notification = ({message, className}) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className={className}>
+      {message}
+    </div>
+  )
+}
+
 const PersonForm = ({submitFunc, inputHandler, nameState, setNameState, numberState, setNumberState}) => {
   return(
     <form onSubmit={submitFunc}>
@@ -57,10 +69,10 @@ const PersonForm = ({submitFunc, inputHandler, nameState, setNameState, numberSt
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
-
   const [newNumber, setNewNumber] = useState('')
-
   const [nameFilter, setNameFilter] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -85,6 +97,12 @@ const App = () => {
             .then(returnedPerson => {
               setPersons(persons.map(person => newPerson.id !== person.id ? person : returnedPerson))
             })
+            .catch(error => {
+              setErrorMessage(`Information of ${newPerson.name} has already been removed from server`)
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)
+            })
       }
     }
     else {
@@ -100,6 +118,10 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           })
+      setSuccessMessage(`Added ${personObject.name}`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
     }
   }
 
@@ -124,6 +146,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} className='success'/>
+      <Notification message={errorMessage} className='error'/>
         <Filter handler={handleInputChange} state={nameFilter} setState={setNameFilter}/>
       <h2>Add a new person</h2>
       <PersonForm 
